@@ -3,7 +3,8 @@ from abc import ABCMeta,abstractmethod
 from operator import truediv
 from pickle import FALSE, TRUE
 
-class Template_de_imposto_condicional(object):
+# classe 
+class Template_de_imposto_condicional(metaclass=ABCMeta):
     __metaclass__ = ABCMeta
     
     def calcula(self,orcamento):
@@ -13,15 +14,15 @@ class Template_de_imposto_condicional(object):
             return self.minima_taxacao(orcamento)
     
     @abstractmethod
-    def deve_usar_maxima_taxacao(orcamento):
+    def deve_usar_maxima_taxacao(self,orcamento):
         pass
     
     @abstractmethod
-    def maxima_taxacao(orcamento):
+    def maxima_taxacao(self,orcamento):
         pass
     
     @abstractmethod
-    def minima_taxacao(orcamento):
+    def minima_taxacao(self,orcamento):
         pass
 
 class ISS(object):
@@ -32,19 +33,26 @@ class ICMS(object):
     def calcula(orcamento):
         return orcamento.valor * 0.06
 
+# classes usando metodos abstratos
 class ICPP(Template_de_imposto_condicional):
-    def calcula(self,orcamento):
-        if orcamento.valor > 500:
-            return orcamento.valor * 0.07
-        else:
-            return orcamento.valor * 0.05
+    def deve_usar_maxima_taxacao(self,orcamento):
+        return orcamento.valor > 500
 
+    def maxima_taxacao(self,orcamento):
+        return orcamento.valor * 0.07
+    
+    def minima_taxacao(self,orcamento):
+        return orcamento.valor * 0.05
 class IKCV(Template_de_imposto_condicional):
-    def calcula(self,orcamento):
-        if orcamento.valor > 500 and self.__tem_item_maior_que_100_reais(orcamento):
-            return orcamento.valor * 0.1
-        else:
-            return orcamento.valor * 0.06
+
+    def deve_usar_maxima_taxacao(self,orcamento):
+        return orcamento.valor > 500 and self.__tem_item_maior_que_100_reais(orcamento)
+    
+    def maxima_taxacao(self,orcamento):
+        return orcamento.valor * 0.1
+    
+    def minima_taxacao(orcamento):
+        return orcamento.valor * 0.06
 
     def __tem_item_maior_que_100_reais(self,orcamento):
         for item in orcamento.obter_itens():
