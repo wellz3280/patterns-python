@@ -16,15 +16,21 @@ if __name__ =='__main__':
     calculador = Calculador_de_impostos()
     orcamento = Orcamento()
     
-    orcamento.adiciona_item(Item('Item A',100.00))
+    orcamento.adiciona_item(Item('Item A',100.0))
     orcamento.adiciona_item(Item('Item B',50.0))
-    orcamento.adiciona_item(Item('Item C',400.00))
+    orcamento.adiciona_item(Item('Item C',400.0))
     
-    print('iss e icms')
-    calculador.realiza_calculo(orcamento,ISS)
-    calculador.realiza_calculo(orcamento,ICMS)
+    print('ISS e ICMS')
+    calculador.realiza_calculo(orcamento,ISS())
+    calculador.realiza_calculo(orcamento,ICMS())
+    
+    print('ICMS COM ISS')
+    calculador.realiza_calculo(orcamento,ICMS(ISS()))
     
     print('ICPP e IKVC')
     calculador.realiza_calculo(orcamento,ICPP())
     calculador.realiza_calculo(orcamento,IKCV())
+    
+    print('IKVC COM ICPP')
+    calculador.realiza_calculo(orcamento,IKCV(ICPP()))
 
