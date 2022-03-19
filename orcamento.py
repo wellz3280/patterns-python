@@ -83,8 +83,3 @@ if __name__ == '__main__':
     print(orcamento.valor)
     orcamento.aplica_desconto_extra()
     print(orcamento.valor)
-    
-    orcamento.estado_atual = Orcamento.APROVADO
-    orcamento.aplica_desconto_extra()
-    
-    print(orcamento.valor)
