@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-
+from observadores import imprime,envia_por_email,salva_no_banco
 from datetime import date
 class Item(object):
     def __init__(self,descricao,valor):
@@ -25,7 +25,10 @@ class Nota_Fiscal(object):
             raise Exception('Detalhes da nota não podeter mais deo que 20 caracteres')
         self.__detalhes = detalhes
         self.__itens = itens
-    
+        imprime(self)
+        envia_por_email(self)
+        salva_no_banco(self)
+        
     @property
     def razao_social(self):
         return self.__razao_social
@@ -60,8 +63,9 @@ if __name__ == '__main__':
         detalhes=''
     )
     
-    nf_builder = (Criador_de_nota_fiscal()
-                .com_razao_social('well Obj ltda')
-                .com_cnpj('365299728033')
-                .com_itens(itens)
-                .constroi())
+    # nf_builder = (Criador_de_nota_fiscal()
+    #             .com_razao_social('well Obj ltda')
+    #             .com_cnpj('365299728033')
+    #             .com_itens(itens)
+    #             .constroi())
+    
