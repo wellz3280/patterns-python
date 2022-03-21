@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-from observadores import imprime,envia_por_email,salva_no_banco
 from datetime import date
 class Item(object):
     def __init__(self,descricao,valor):
@@ -16,7 +15,7 @@ class Item(object):
     
 class Nota_Fiscal(object):
     # parametros opcionais devem os ultimos parametros do construtor
-    def __init__(self,razao_social,cnpj,itens,data_de_emissao=date.today(),detalhes=''):
+    def __init__(self,razao_social,cnpj,itens,data_de_emissao=date.today(),detalhes='',observadores=[]):
         self.__razao_social = razao_social
         self.__cnpj = cnpj
         self.__data_de_emissao = data_de_emissao
@@ -25,9 +24,9 @@ class Nota_Fiscal(object):
             raise Exception('Detalhes da nota não podeter mais deo que 20 caracteres')
         self.__detalhes = detalhes
         self.__itens = itens
-        imprime(self)
-        envia_por_email(self)
-        salva_no_banco(self)
+        
+        for observador in observadores:
+            observador(self)
         
     @property
     def razao_social(self):
@@ -48,6 +47,7 @@ class Nota_Fiscal(object):
 
 if __name__ == '__main__':
     from criador_de_nota_filcal import Criador_de_nota_fiscal
+    from observadores import imprime,envia_por_email,salva_no_banco
     
     itens = [
         Item('ITEM A ',100),
@@ -60,7 +60,8 @@ if __name__ == '__main__':
         razao_social='FHSA ltda',
         itens = itens,
         data_de_emissao =date.today(),
-        detalhes=''
+        detalhes='',
+        observadores=[imprime,envia_por_email,salva_no_banco]
     )
     
     # nf_builder = (Criador_de_nota_fiscal()
