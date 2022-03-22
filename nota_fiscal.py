@@ -47,12 +47,14 @@ class Nota_Fiscal(object):
 
 if __name__ == '__main__':
     from criador_de_nota_filcal import Criador_de_nota_fiscal
-    from observadores import imprime,envia_por_email,salva_no_banco
+    from observadores import Observer
     
     itens = [
         Item('ITEM A ',100),
         Item('ITEM B',200)
     ]
+    
+    obj_observer = Observer()
     
     # parametros nomeados
     nota_fiscal = Nota_Fiscal(
@@ -61,7 +63,7 @@ if __name__ == '__main__':
         itens = itens,
         data_de_emissao =date.today(),
         detalhes='',
-        observadores=[imprime,envia_por_email,salva_no_banco]
+        observadores=[obj_observer.imprime,obj_observer.envia_por_email,obj_observer.salva_no_banco]
     )
     
     # nf_builder = (Criador_de_nota_fiscal()
